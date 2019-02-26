@@ -39,22 +39,22 @@ publishing {
 
             artifact source: file, extension: 'aar'
 
-            pom.withXml {
-
-                asNode().appendNode('description', rootProject.arrDescription)
-
-                def dependencies = asNode().appendNode('dependencies')
-
-                configurations.getByName("_releaseCompile").getResolvedConfiguration().getFirstLevelModuleDependencies().each {
-
-                    def dependency = dependencies.appendNode('dependency')
-                    dependency.appendNode('groupId', it.moduleGroup)
-                    dependency.appendNode('artifactId', it.moduleName)
-                    dependency.appendNode('version', it.moduleVersion)
-
-                }
-
-            }
+//            pom.withXml {
+//
+//                asNode().appendNode('description', rootProject.arrDescription)
+//
+//                def dependencies = asNode().appendNode('dependencies')
+//
+//                configurations.getByName("_releaseCompile").getResolvedConfiguration().getFirstLevelModuleDependencies().each {
+//
+//                    def dependency = dependencies.appendNode('dependency')
+//                    dependency.appendNode('groupId', it.moduleGroup)
+//                    dependency.appendNode('artifactId', it.moduleName)
+//                    dependency.appendNode('version', it.moduleVersion)
+//
+//                }
+//
+//            }
         }
 
     }
