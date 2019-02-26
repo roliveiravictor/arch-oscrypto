@@ -14,10 +14,7 @@ task ciTest(dependsOn: [':oscrypto:test']) << {
 
 buildscript {
     repositories {
-        maven {
-            jcenter()
-            google()
-        }
+        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.3'
@@ -28,10 +25,7 @@ buildscript {
 
 allprojects {
     repositories {
-        maven {
-            jcenter()
-            google()
-        }
+        jcenter()
     }
 }
 
