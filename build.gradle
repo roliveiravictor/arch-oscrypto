@@ -15,7 +15,8 @@ task ciTest(dependsOn: [':oscrypto:test']) << {
 buildscript {
     repositories {
         maven {
-            url mavenUrl
+            jcenter()
+            google()
         }
     }
     dependencies {
@@ -28,7 +29,8 @@ buildscript {
 allprojects {
     repositories {
         maven {
-            url mavenUrl
+            jcenter()
+            google()
         }
     }
 }
