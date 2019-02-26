@@ -1,0 +1,18 @@
+apply plugin: 'maven'
+
+uploadArchives {
+
+    repositories {
+
+        mavenDeployer {
+            repository(url: mavenLocal().url)
+            pom.groupId = rootProject.groupId
+            pom.artifactId = rootProject.aarName
+            pom.version = rootProject.projectVersion
+        }
+
+    }
+
+}
+
+task install(dependsOn: uploadArchives)

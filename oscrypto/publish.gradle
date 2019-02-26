@@ -1,0 +1,62 @@
+apply plugin: 'maven-publish'
+
+publishing {
+
+    repositories {
+
+        maven {
+
+            credentials {
+                username System.getenv('NEXUS_USERNAME')
+                password System.getenv('NEXUS_PASSWORD')
+            }
+
+            if (projectVersion.endsWith('-RELEASE')) {
+                url 'http://' + System.getenv('NEXUS_ADDR') + '/artifactory/maven-releases/'
+            } else {
+                url 'http://' + System.getenv('NEXUS_ADDR') + '/artifactory/maven-snapshots/'
+            }
+
+        }
+
+    }
+
+    publications {
+
+        def file
+
+        if (projectVersion.endsWith('-RELEASE')) {
+            file = "$buildDir/outputs/aar/" + rootProject.aarName + "-release.aar"
+        } else {
+            file = "$buildDir/outputs/aar/" + rootProject.aarName + "-debug.aar"
+        }
+
+        maven(MavenPublication) {
+
+            groupId rootProject.groupId
+            artifactId rootProject.aarName
+            version rootProject.projectVersion
+
+            artifact source: file, extension: 'aar'
+
+            pom.withXml {
+
+                asNode().appendNode('description', rootProject.arrDescription)
+
+                def dependencies = asNode().appendNode('dependencies')
+
+                configurations.getByName("_releaseCompile").getResolvedConfiguration().getFirstLevelModuleDependencies().each {
+
+                    def dependency = dependencies.appendNode('dependency')
+                    dependency.appendNode('groupId', it.moduleGroup)
+                    dependency.appendNode('artifactId', it.moduleName)
+                    dependency.appendNode('version', it.moduleVersion)
+
+                }
+
+            }
+        }
+
+    }
+
+}

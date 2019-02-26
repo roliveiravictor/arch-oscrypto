@@ -1,0 +1,57 @@
+task ciBuildPro(dependsOn: [':oscrypto:assembleRelease']) << {
+    println "-------- ciBuildPro"
+}
+
+task ciBuildDev(dependsOn: [':oscrypto:assembleDebug']) << {
+    println "-------- ciBuildPre"
+}
+
+task ciTest(dependsOn: [':oscrypto:test']) << {
+    println "-------- ciTest"
+    println "-------- starting jacoco..."
+    tasks.findByName('jacocoTest')
+}
+
+buildscript {
+    repositories {
+        maven {
+            url mavenUrl
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'com.google.gms:google-services:3.0.0'
+    }
+}
+
+allprojects {
+    repositories {
+        maven {
+            url mavenUrl
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+
+    minSdkVersion = 19
+    targetSdkVersion = 26
+    compileSdkVersion = 26
+    buildToolsVersion = '26.0.3'
+
+    versionCode = 1
+    versionName = '1.0.2'
+    aarName = 'oscrypto'
+    groupId = 'br.com.stonetree.oscrypto'
+    projectVersion = versionName + '-RELEASE'
+
+    jacocoVersion = "0.8.2"
+
+    arrDescription = 'ARCH SDK - OSCrypto'
+
+}

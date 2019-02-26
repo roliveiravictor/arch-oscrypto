@@ -1,0 +1,97 @@
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion rootProject.jacocoVersion
+}
+
+android {
+
+    testOptions {
+
+        unitTests.returnDefaultValues = true
+
+        unitTests.all {
+
+            systemProperty 'robolectric.dependency.repo.url', 'http://' + System.getenv('NEXUS_ADDR') + '/artifactory/maven-releases/'
+            systemProperty 'robolectric.dependency.repo.id', 'nexus'
+
+            if (projectVersion.endsWith('-RELEASE')) {
+                systemProperty 'robolectric.logging.enabled', 'false'
+            } else {
+                systemProperty 'robolectric.logging.enabled', 'true'
+            }
+
+            jacoco {
+                includeNoLocationClasses = true
+            }
+
+        }
+
+    }
+
+}
+
+task jacocoTest(type: JacocoReport, dependsOn: "testDebugUnitTest") {
+
+    def buildTypes = android.buildTypes.collect { type -> type.name }
+    def productFlavors = android.productFlavors.collect { flavor -> flavor.name }
+
+    if (!productFlavors) productFlavors.add('')
+
+    productFlavors.each { productFlavorName ->
+        buildTypes.each { buildTypeName ->
+
+            def sourceName, sourcePath
+
+            if (!productFlavorName) {
+                sourceName = sourcePath = "${buildTypeName}"
+            } else {
+                sourceName = "${productFlavorName}${buildTypeName.capitalize()}"
+                sourcePath = "${productFlavorName}/${buildTypeName}"
+            }
+
+            def testTaskName = "test${sourceName.capitalize()}UnitTest"
+
+            task "${testTaskName}Coverage"(type: JacocoReport, dependsOn: "$testTaskName") {
+
+                group = "Reporting"
+
+                description = "Generate Jacoco coverage reports on the ${sourceName.capitalize()} build."
+
+                classDirectories = fileTree(
+                        dir: "${project.buildDir}/intermediates/classes/${sourcePath}",
+                        excludes: ['**/*view*/*',
+                                   '**/view/*',
+                                   '**/*$ViewInjector*.*',
+                                   '**/*$ViewBinder*.*',
+                                   '**/BuildConfig.*',
+                                   '**/Manifest*.*',
+                                   '**/presentation/*',
+                                   '**/R$*.class',
+                                   '**/*Activity.class',
+                                   '**/*Adapter.class',
+                                   '**/R.class',
+                                   '**/*Response.class',
+                                   '**/*Request.class']
+                )
+
+                def coverageSourceDirs = [
+                        "src/main/java",
+                        "src/$productFlavorName/java",
+                        "src/$buildTypeName/java"
+                ]
+
+                additionalSourceDirs = files(coverageSourceDirs)
+                sourceDirectories = files(coverageSourceDirs)
+
+                executionData = files("${project.buildDir}/jacoco/${testTaskName}.exec")
+
+                reports {
+                    xml.enabled = true
+                    html.enabled = true
+                }
+
+            }
+        }
+    }
+}
