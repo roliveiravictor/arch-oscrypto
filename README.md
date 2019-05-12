@@ -25,9 +25,9 @@
 
 [10 - Contact](#contact)
 
-[11 - Forthcoming Work](#forthcoming)
+[11 - Forthcoming Work](#forthcoming-work)
 
-[12 - Buy me a coffee](#buy)
+[12 - Buy me a coffee](#buy-me-a-coffee-)
 
 # Description
 
@@ -114,4 +114,6 @@ OSCryptoHelper.decrypt("<To decrypt text goes here>");
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=5VY87PA2ETA6A&item_name=Buy+me+a+coffe+%3B%29&currency_code=USD&source=url)
 
-[![qr.png](assets/qr.png)]
+
+
+![qr.png](assets/qr.png)
