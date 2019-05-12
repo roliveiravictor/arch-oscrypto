@@ -98,6 +98,14 @@ OSCryptoHelper.decrypt("<To decrypt text goes here>");
 - https://stackoverflow.com/questions/7046997/arent-private-keys-vulnerable-in-memory
 - https://crypto.stackexchange.com/questions/40534/what-is-the-use-of-key-iterations
 
+#   Contact:
+
+- roliveira.victor@gmail.com
+
 #   Forthcoming Work:
 
 - Support more than just AES-256.
+
+#   Buy me a coffee ;)
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RGQ8NSYPA59FL)
